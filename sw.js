@@ -3,9 +3,13 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/assets/icon-192.png',
-  '/assets/icon-512.png'
-  // Ajoute d'autres assets statiques si besoin
+  '/assets/icon-16x16.png',
+  '/assets/icon-32x32.png',
+  '/assets/icon-48x48.png',
+  '/assets/icon-64x64.png',
+  '/assets/icon-128x128.png',
+  '/assets/icon-256x256.png',
+  '/assets/icon-512x512.png'
 ];
 
 self.addEventListener('install', event => {
