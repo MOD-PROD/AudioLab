@@ -1,40 +1,406 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>ΔUDIO LΔB PRO | Mastering Engine</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff8c00">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="AudioLab Pro">
-  <link rel="icon" type="image/png" sizes="16x16"  href="assets/icon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32"  href="assets/icon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48"  href="assets/icon-48x48.png">
-  <link rel="icon" type="image/png" sizes="64x64"  href="assets/icon-64x64.png">
-  <link rel="icon" type="image/png" sizes="128x128" href="assets/icon-128x128.png">
-  <link rel="icon" type="image/png" sizes="256x256" href="assets/icon-256x256.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512x512.png">
-  <link rel="apple-touch-icon" sizes="128x128" href="assets/icon-128x128.png">
-  <link rel="apple-touch-icon" sizes="256x256" href="assets/icon-256x256.png">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ΔUDIO LΔB | MODPROD</title>
+    <meta name="description" content="Outil gratuit en ligne pour remasteriser et améliorer vos pistes audio – EQ, compression, effets. Sans inscription.">
+
+    <!-- PWA et meta essentiels -->
+    <meta name="theme-color" content="#ff8c00">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AudioLab Pro">
+
+    <!-- Manifest (fichier séparé) -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicons et icônes multi-tailles (comme dans ton message) -->
+    <link rel="icon" type="image/png" sizes="16x16"   href="assets/icon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32"   href="assets/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48"   href="assets/icon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64"   href="assets/icon-64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="assets/icon-128x128.png">
+    <link rel="icon" type="image/png" sizes="256x256" href="assets/icon-256x256.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512x512.png">
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="128x128" href="assets/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="assets/icon-256x256.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800;900&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --copper:       #b87333;
+            --copper-light: #d4944a;
+            --copper-bright:#e8a84e;
+            --copper-glow:  #f0b860;
+            --orange:       #ff8c00;
+            --black:        #080808;
+            --surface-1:    #111111;
+            --surface-2:    #181818;
+            --surface-3:    #202020;
+            --border-copper:#3d2a10;
+            --text-primary: #e8ddd0;
+            --text-muted:   #7a6a58;
+            --text-dim:     #4a3f34;
+        }
+
+        * { box-sizing: border-box; margin:0; padding:0; }
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: var(--black);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 1.5rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin: 1.5rem 0 3.5rem;
+        }
+
+        .delta-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 900;
+            font-size: clamp(2.8rem, 9vw, 5.8rem);
+            letter-spacing: 0.14em;
+            background: linear-gradient(135deg, var(--copper), var(--copper-bright), var(--copper-glow));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(184, 115, 51, 0.25);
+            line-height: 1.05;
+        }
+
+        .subtitle {
+            margin-top: 0.9rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .control-group {
+            background: linear-gradient(162deg, #181818, #111111);
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.2rem;
+            border: 1px solid var(--border-copper);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+        }
+
+        .control-group h3 {
+            color: var(--copper-bright);
+            font-size: 1.15rem;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px solid var(--border-copper);
+            padding-bottom: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            padding: 0.85rem 1.8rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--copper), var(--copper-bright));
+            color: #0e0e0e;
+            border: 1px solid var(--copper-glow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--copper-bright), var(--copper-glow));
+            box-shadow: 0 0 22px rgba(232, 168, 78, 0.45);
+            transform: translateY(-1px);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 7px;
+            background: #222;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 0.6rem 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            background: var(--copper-glow);
+            border-radius: 50%;
+            border: 2px solid #000;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(240, 184, 96, 0.5);
+        }
+
+        .slider-row { margin-bottom: 1.6rem; }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .player-box { text-align: center; margin: 2rem 0; }
+
+        #playback-status {
+            font-size: 0.8rem;
+            color: var(--copper-light);
+            background: rgba(184,115,51,0.12);
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .hidden { display: none; }
+
+        #install-btn {
+            margin: 1.5rem auto;
+            display: none;
+            padding: 1rem 2.2rem;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-copper);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        footer a { color: var(--text-muted); text-decoration: none; }
+        footer a:hover { color: var(--copper-bright); }
+
+        @media (min-width: 768px) { body { padding: 2rem 4rem; } }
+    </style>
 </head>
-<body class="portrait-only">
+<body>
 
-<!-- PWA INSTALL BANNER -->
-<div id="pwa-install-banner">
-  <img src="assets/icon-64x64.png" style="width:40px;height:40px;border-radius:8px;flex-shrink:0;">
-  <div style="flex:1;">
-    <div style="font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;">Installer AudioLab Pro</div>
-    <div style="font-size:9px;color:#666;margin-top:2px;">Utiliser hors-ligne, comme une app native</div>
-  </div>
-  <button style="background:var(--accent);color:#000;border:none;border-radius:8px;padding:8px 14px;font-family:'JetBrains Mono';font-size:9px;font-weight:800;text-transform:uppercase;cursor:pointer;">Installer</button>
-  <button onclick="this.closest('#pwa-install-banner').style.display='none';" style="background:transparent;border:1px solid #333;border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono';font-size:9px;color:#555;cursor:pointer;">✕</button>
-</div>
+<header>
+    <h1 class="delta-title">ΔUDIO LΔB</h1>
+    <p class="subtitle">Laboratoire de Remasterisation</p>
+    <button id="install-btn" class="btn btn-primary">Installer l'application</button>
+</header>
 
+<main class="container">
+
+    <section id="import-section" class="control-group">
+        <h3>1. Charger le média</h3>
+        <div style="margin: 1.5rem 0; text-align: center;">
+            <label for="audioFile" class="btn btn-primary" style="cursor:pointer; display:inline-block;">
+                Choisir fichier
+            </label>
+            <input type="file" id="audioFile" accept="audio/*,video/mp4" class="hidden"/>
+            <p id="fileName" style="margin-top:1.2rem; color:var(--text-muted); font-size:0.85rem;">
+                Aucun fichier sélectionné
+            </p>
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-dim); text-align:center;">
+            MP3 • WAV • FLAC • OGG • AAC • MP4 (extraction audio automatique)
+        </p>
+    </section>
+
+    <section id="lab-section" class="control-group hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.6rem;">
+            <h3>2. Studio de mixage</h3>
+            <span id="playback-status">ARRÊTÉ</span>
+        </div>
+
+        <div class="player-box">
+            <audio id="audioPlayer" controls class="hidden"></audio>
+            <button id="playPauseBtn" class="btn btn-primary" style="width:100%; max-width:420px; padding:1.1rem 0;">
+                LECTURE / PAUSE
+            </button>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.6rem; margin-top:2rem;">
+            <div class="slider-row">
+                <div class="slider-label"><span>Volume global</span><span id="val-gain">1.00</span></div>
+                <input type="range" id="gain" min="0" max="2" step="0.01" value="1">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Basses</span><span id="val-bass">0 dB</span></div>
+                <input type="range" id="bass" min="-12" max="12" step="0.5" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Aigus / Clarté</span><span id="val-treble">0 dB</span></div>
+                <input type="range" id="treble" min="-12" max="12" step="0.5" value="0">
+            </div>
+            <div class="slider-row">
+                <div class="slider-label"><span>Compression (Threshold)</span><span id="val-comp">-24 dB</span></div>
+                <input type="range" id="comp" min="-60" max="0" step="1" value="-24">
+            </div>
+        </div>
+
+        <div style="margin-top:3rem; text-align:center;">
+            <button id="exportBtn" class="btn btn-primary" style="width:100%; padding:1.3rem; font-size:1.05rem;">
+                Exporter le master (WAV)
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>© <span id="currentYear"></span> <a href="https://puter.com/mbdr.ai" target="_blank" rel="noopener">MODPROD</a>. Tous droits réservés.<br>
+    Open Source sur <a href="https://github.com/MOD-PROD/AudioLab" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script>
+// Année dynamique
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+// ─── PWA Install Prompt ────────────────────────────────
+let deferredPrompt;
+const installBtn = document.getElementById('install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('Prompt d’installation disponible');
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'inline-block';
+});
+
+installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log('Résultat installation :', outcome);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+    }
+});
+
+// ─── Service Worker ────────────────────────────────
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Service Worker enregistré → scope:', reg.scope))
+            .catch(err => console.error('Échec SW:', err));
+    });
+}
+
+// ─── Logique audio complète ────────────────────────────────
+const audioFileInput = document.getElementById('audioFile');
+const fileNameDisplay = document.getElementById('fileName');
+const labSection = document.getElementById('lab-section');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const playbackStatus = document.getElementById('playback-status');
+const audioPlayer = document.getElementById('audioPlayer');
+
+let audioCtx = null;
+let source = null;
+let gainNode = null;
+let bassNode = null;
+let trebleNode = null;
+let compressor = null;
+
+function initAudioContext() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    source = audioCtx.createMediaElementSource(audioPlayer);
+    gainNode = audioCtx.createGain();
+    bassNode = audioCtx.createBiquadFilter();
+    trebleNode = audioCtx.createBiquadFilter();
+    compressor = audioCtx.createDynamicsCompressor();
+
+    bassNode.type = 'lowshelf';     bassNode.frequency.value = 250;
+    trebleNode.type = 'highshelf';  trebleNode.frequency.value = 3500;
+
+    source.connect(bassNode);
+    bassNode.connect(trebleNode);
+    trebleNode.connect(compressor);
+    compressor.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+}
+
+// Chargement fichier
+audioFileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    fileNameDisplay.textContent = `Fichier : ${file.name}`;
+    labSection.classList.remove('hidden');
+
+    const url = URL.createObjectURL(file);
+    audioPlayer.src = url;
+
+    initAudioContext();
+});
+
+// Play / Pause
+playPauseBtn.addEventListener('click', () => {
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+
+    if (audioPlayer.paused) {
+        audioPlayer.play().catch(err => console.error('Erreur lecture:', err));
+        playbackStatus.textContent = 'LECTURE';
+        playPauseBtn.textContent = 'PAUSE';
+    } else {
+        audioPlayer.pause();
+        playbackStatus.textContent = 'PAUSE';
+        playPauseBtn.textContent = 'LECTURE';
+    }
+});
+
+// Sliders temps réel
+document.getElementById('gain').addEventListener('input', e => {
+    if (gainNode) gainNode.gain.value = e.target.value;
+    document.getElementById('val-gain').textContent = Number(e.target.value).toFixed(2);
+});
+
+document.getElementById('bass').addEventListener('input', e => {
+    if (bassNode) bassNode.gain.value = e.target.value;
+    document.getElementById('val-bass').textContent = e.target.value + ' dB';
+});
+
+document.getElementById('treble').addEventListener('input', e => {
+    if (trebleNode) trebleNode.gain.value = e.target.value;
+    document.getElementById('val-treble').textContent = e.target.value + ' dB';
+});
+
+document.getElementById('comp').addEventListener('input', e => {
+    if (compressor) compressor.threshold.value = e.target.value;
+    document.getElementById('val-comp').textContent = e.target.value + ' dB';
+});
+
+// Export simulé (placeholder)
+document.getElementById('exportBtn').addEventListener('click', () => {
+    const btn = document.getElementById('exportBtn');
+    btn.disabled = true;
+    btn.textContent = 'TRAITEMENT EN COURS...';
+
+    setTimeout(() => {
+        alert('Master exporté ! (simulation – version complète → fichier WAV téléchargeable)');
+        btn.disabled = false;
+        btn.textContent = 'Exporter le master (WAV)';
+    }, 2200);
+});
+</script>
+</body>
+</html>
 <div class="app-container">
 
   <!-- HEADER -->
