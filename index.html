@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ΔUDIO LΔB | MODPROD</title>
-    <meta name="description" content="Outil gratuit en ligne pour remasteriser et améliorer vos pistes audio – EQ, compression, effets. Sans inscription.">
+    <meta name="description" content="Free online tool to remaster and enhance your audio tracks – EQ, compression, effects.">
 
-    <!-- PWA Meta -->
+    <!-- PWA Meta complet (comme tu l’as demandé) -->
     <meta name="theme-color" content="#ff8c00">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,7 +15,7 @@
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Favicons & Apple Touch Icons (tous ceux que tu as listés) -->
+    <!-- Toutes les icônes que tu as listées -->
     <link rel="icon" type="image/png" sizes="16x16"   href="assets/icon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32"   href="assets/icon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48"   href="assets/icon-48x48.png">
@@ -37,7 +37,6 @@
             --copper-light: #d4944a;
             --copper-bright:#e8a84e;
             --copper-glow: #f0b860;
-            --orange: #ff8c00;
             --black: #080808;
             --surface-1: #111111;
             --surface-2: #181818;
@@ -48,214 +47,236 @@
             --text-dim: #4a3f34;
         }
 
-        * { box-sizing: border-box; margin:0; padding:0; }
         body {
             font-family: 'IBM Plex Mono', monospace;
             background: var(--black);
             color: var(--text-primary);
-            min-height: 100vh;
+            margin: 0;
             padding: 1.5rem 1rem;
+            min-height: 100vh;
         }
 
-        header { text-align: center; margin: 1.5rem 0 3.5rem; }
+        header {
+            text-align: center;
+            margin: 1.5rem 0 3.5rem;
+        }
 
         .delta-title {
             font-family: 'JetBrains Mono', monospace;
             font-weight: 900;
-            font-size: clamp(2.8rem, 9vw, 5.8rem);
+            font-size: clamp(2.5rem, 8vw, 5rem);
             letter-spacing: 0.14em;
-            background: linear-gradient(135deg, var(--copper), var(--copper-bright), var(--copper-glow));
+            background: linear-gradient(135deg, #b87333, #e8a84e, #f0b860);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(184, 115, 51, 0.25);
+            text-shadow: 0 0 20px rgba(184, 115, 51, 0.2);
             line-height: 1.05;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .delta-title:hover {
+            transform: scale(1.02);
+            filter: drop-shadow(0 0 10px rgba(184, 115, 51, 0.3));
         }
 
         .subtitle {
             margin-top: 0.9rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
-            letter-spacing: 0.18em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
         }
 
-        .container { max-width: 900px; margin: 0 auto; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
         .control-group {
             background: linear-gradient(162deg, #181818, #111111);
             padding: 1.8rem 2rem;
             border-radius: 12px;
-            margin-bottom: 2.2rem;
+            margin-bottom: 2rem;
             border: 1px solid var(--border-copper);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .control-group h3 {
+            color: var(--copper-bright);
+            font-size: 1.1rem;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px solid var(--border-copper);
+            padding-bottom: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
 
         .btn {
-            padding: 0.85rem 1.8rem;
+            padding: 0.85rem 1.7rem;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.22s ease;
-            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+            letter-spacing: 0.06em;
+            display: inline-block;
+            text-align: center;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border: none;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--copper), var(--copper-bright));
+            background: linear-gradient(135deg, #b87333, #e8a84e);
             color: #0e0e0e;
-            border: 1px solid var(--copper-glow);
+            border: 1px solid #f0b860;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, var(--copper-bright), var(--copper-glow));
-            box-shadow: 0 0 22px rgba(232, 168, 78, 0.45);
+            background: linear-gradient(135deg, #e8a84e, #f0b860);
+            box-shadow: 0 0 20px rgba(232, 168, 78, 0.4);
             transform: translateY(-1px);
         }
 
         input[type="range"] {
             width: 100%;
-            height: 7px;
+            height: 6px;
             background: #222;
             border-radius: 4px;
             outline: none;
             -webkit-appearance: none;
-            margin: 0.6rem 0;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px; height: 20px;
-            background: var(--copper-glow);
+            width: 18px;
+            height: 18px;
+            background: #f0b860;
             border-radius: 50%;
             border: 2px solid #000;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(240, 184, 96, 0.5);
+            box-shadow: 0 0 10px rgba(240, 184, 96, 0.4);
         }
 
-        .slider-row { margin-bottom: 1.6rem; }
+        .slider-row {
+            margin-bottom: 1.5rem;
+        }
 
         .slider-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             margin-bottom: 0.5rem;
             text-transform: uppercase;
         }
 
-        .player-box { text-align: center; margin: 2rem 0; }
-
-        #playback-status {
-            font-size: 0.8rem;
-            color: var(--copper-light);
-            background: rgba(184,115,51,0.12);
-            padding: 4px 12px;
-            border-radius: 6px;
+        .player-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
         .hidden { display: none; }
 
+        #playback-status {
+            font-size: 0.7rem;
+            color: var(--copper-light);
+            background: rgba(184, 115, 51, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
         #install-btn {
-            margin: 1.5rem auto;
+            margin: 1rem auto;
             display: none;
-            padding: 1rem 2.2rem;
-            font-size: 1.05rem;
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
         }
 
         footer {
-            margin-top: 5rem;
-            padding-top: 2.5rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
             border-top: 1px solid var(--border-copper);
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-dim);
         }
 
         footer a { color: var(--text-muted); text-decoration: none; }
         footer a:hover { color: var(--copper-bright); }
-
-        @media (min-width: 768px) { body { padding: 2rem 4rem; } }
     </style>
 </head>
 <body>
 
 <header>
     <h1 class="delta-title">ΔUDIO LΔB</h1>
-    <p class="subtitle">Laboratoire de Remasterisation</p>
-    <button id="install-btn" class="btn btn-primary">Installer l'application</button>
+    <p class="subtitle">Remastering Laboratory</p>
+    <button id="install-btn" class="btn btn-primary">Installer ΔUDIO LΔB</button>
 </header>
 
 <main class="container">
-
+    <!-- Step 1: Import -->
     <section id="import-section" class="control-group">
-        <h3>1. Charger le média</h3>
+        <h3>1. Load Media</h3>
         <div style="margin: 1.5rem 0; text-align: center;">
-            <label for="audioFile" class="btn btn-primary" style="cursor:pointer; display:inline-block;">
-                Choisir fichier
+            <label for="audioFile" class="btn btn-primary">
+                Choose File
             </label>
             <input type="file" id="audioFile" accept="audio/*,video/mp4" class="hidden"/>
-            <p id="fileName" style="margin-top:1.2rem; color:var(--text-muted); font-size:0.85rem;">
-                Aucun fichier sélectionné
-            </p>
+            <p id="fileName" style="margin-top:1.2rem; color:var(--text-muted); font-size: 0.85rem;">No file selected</p>
         </div>
-        <p style="font-size:0.78rem; color:var(--text-dim); text-align:center;">
-            MP3 • WAV • FLAC • OGG • AAC • MP4 (extraction audio automatique)
+        <p style="font-size:0.75rem; color:var(--text-dim); text-align: center;">
+            MP3 • WAV • FLAC • MP4 (Auto Audio Extraction)
         </p>
     </section>
 
+    <!-- Step 2: Lab (Controls) -->
     <section id="lab-section" class="control-group hidden">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.6rem;">
-            <h3>2. Studio de mixage</h3>
-            <span id="playback-status">ARRÊTÉ</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3>2. Mixing Studio</h3>
+            <span id="playback-status" class="mono">STOPPED</span>
         </div>
-
-        <div class="player-box">
-            <audio id="audioPlayer" controls class="hidden"></audio>
-            <button id="playPauseBtn" class="btn btn-primary" style="width:100%; max-width:420px; padding:1.1rem 0;">
-                LECTURE / PAUSE
-            </button>
+        <div class="player-box mb-8">
+            <audio id="audio-player"></audio>
+            <button id="play-btn" class="btn btn-primary" style="width: 100%;">PLAY / PAUSE</button>
         </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.6rem; margin-top:2rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
             <div class="slider-row">
-                <div class="slider-label"><span>Volume global</span><span id="val-gain">1.00</span></div>
-                <input type="range" id="gain" min="0" max="2" step="0.01" value="1">
+                <div class="slider-label"><span>Gain (Volume)</span><span id="val-gain">1.0</span></div>
+                <input type="range" id="gain-control" min="0" max="2" step="0.01" value="1">
             </div>
             <div class="slider-row">
-                <div class="slider-label"><span>Basses</span><span id="val-bass">0 dB</span></div>
-                <input type="range" id="bass" min="-12" max="12" step="0.5" value="0">
+                <div class="slider-label"><span>Bass Boost</span><span id="val-bass">0 dB</span></div>
+                <input type="range" id="bass-control" min="-10" max="20" step="1" value="0">
             </div>
             <div class="slider-row">
-                <div class="slider-label"><span>Aigus / Clarté</span><span id="val-treble">0 dB</span></div>
-                <input type="range" id="treble" min="-12" max="12" step="0.5" value="0">
+                <div class="slider-label"><span>Clarity (Highs)</span><span id="val-treble">0 dB</span></div>
+                <input type="range" id="treble-control" min="-10" max="20" step="1" value="0">
             </div>
             <div class="slider-row">
-                <div class="slider-label"><span>Compression (Threshold)</span><span id="val-comp">-24 dB</span></div>
-                <input type="range" id="comp" min="-60" max="0" step="1" value="-24">
+                <div class="slider-label"><span>Punch (Compressor)</span><span id="val-comp">-24 dB</span></div>
+                <input type="range" id="comp-control" min="-60" max="0" step="1" value="-24">
             </div>
         </div>
-
-        <div style="margin-top:3rem; text-align:center;">
-            <button id="exportBtn" class="btn btn-primary" style="width:100%; padding:1.3rem; font-size:1.05rem;">
-                Exporter le master (WAV)
+        <div style="margin-top: 2.5rem; text-align: center;">
+            <button id="export-btn" class="btn btn-primary" style="width: 100%; padding: 1.2rem;">
+                Export Master (.WAV)
             </button>
         </div>
     </section>
-
 </main>
 
 <footer>
-    <p>© <span id="currentYear"></span> <a href="https://puter.com/mbdr.ai" target="_blank" rel="noopener">MODPROD</a>. Tous droits réservés.<br>
-    Open Source sur <a href="https://github.com/MOD-PROD/AudioLab" target="_blank" rel="noopener">GitHub</a></p>
+    <p>© <span id="currentYear"></span> <a href="https://puter.com/mbdr.ai" target="_blank" rel="noopener">MODPROD</a>. All Rights Reserved.<br>
+    Open Sourced on <a href="https://github.com/mbdr-byte/audio-remaster" target="_blank" rel="noopener">GitHub</a></p>
 </footer>
 
 <script>
-// Année
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-// Prompt installation PWA
+// ─── PWA Install Prompt ────────────────────────────────
 let deferredPrompt;
 const installBtn = document.getElementById('install-btn');
 
@@ -269,48 +290,40 @@ installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        console.log('Install outcome:', outcome);
+        console.log(`Install prompt outcome: ${outcome}`);
         deferredPrompt = null;
         installBtn.style.display = 'none';
     }
 });
 
-// Service Worker
+// ─── Service Worker Registration ───────────────────────
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('SW OK → scope:', reg.scope))
-            .catch(err => console.error('SW KO:', err));
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('Service Worker registered', reg.scope))
+            .catch(err => console.error('Service Worker registration failed:', err));
     });
 }
 
-// Audio logic
-const audioFileInput = document.getElementById('audioFile');
-const fileNameDisplay = document.getElementById('fileName');
-const labSection = document.getElementById('lab-section');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const playbackStatus = document.getElementById('playback-status');
-const audioPlayer = document.getElementById('audioPlayer');
+// ─── Audio Engine ────────────────────────────────
+let audioCtx, source, gainNode, bassNode, trebleNode, compressor;
+const player = document.getElementById('audio-player');
+const playBtn = document.getElementById('play-btn');
 
-let audioCtx = null;
-let source = null;
-let gainNode = null;
-let bassNode = null;
-let trebleNode = null;
-let compressor = null;
-
-function initAudioContext() {
+function initAudio() {
     if (audioCtx) return;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-    source = audioCtx.createMediaElementSource(audioPlayer);
+    source = audioCtx.createMediaElementSource(player);
     gainNode = audioCtx.createGain();
     bassNode = audioCtx.createBiquadFilter();
     trebleNode = audioCtx.createBiquadFilter();
     compressor = audioCtx.createDynamicsCompressor();
 
-    bassNode.type = 'lowshelf';     bassNode.frequency.value = 250;
-    trebleNode.type = 'highshelf';  trebleNode.frequency.value = 3500;
+    bassNode.type = "lowshelf";
+    bassNode.frequency.value = 250;
+    trebleNode.type = "highshelf";
+    trebleNode.frequency.value = 3500;
 
     source.connect(bassNode);
     bassNode.connect(trebleNode);
@@ -319,64 +332,159 @@ function initAudioContext() {
     gainNode.connect(audioCtx.destination);
 }
 
-audioFileInput.addEventListener('change', e => {
+// File Management
+document.getElementById('audioFile').addEventListener('change', e => {
     const file = e.target.files[0];
-    if (!file) return;
-
-    fileNameDisplay.textContent = `Fichier : ${file.name}`;
-    labSection.classList.remove('hidden');
-
-    const url = URL.createObjectURL(file);
-    audioPlayer.src = url;
-
-    initAudioContext();
-});
-
-playPauseBtn.addEventListener('click', () => {
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-
-    if (audioPlayer.paused) {
-        audioPlayer.play().catch(err => console.error('Play error:', err));
-        playbackStatus.textContent = 'LECTURE';
-        playPauseBtn.textContent = 'PAUSE';
-    } else {
-        audioPlayer.pause();
-        playbackStatus.textContent = 'PAUSE';
-        playPauseBtn.textContent = 'LECTURE';
+    if (file) {
+        const url = URL.createObjectURL(file);
+        player.src = url;
+        document.getElementById('fileName').textContent = `File: ${file.name}`;
+        document.getElementById('lab-section').classList.remove('hidden');
+        initAudio();
     }
 });
 
-document.getElementById('gain').addEventListener('input', e => {
+// Playback Controls
+playBtn.onclick = () => {
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    if (player.paused) {
+        player.play();
+        document.getElementById('playback-status').textContent = "PLAYING";
+    } else {
+        player.pause();
+        document.getElementById('playback-status').textContent = "PAUSED";
+    }
+};
+
+// Real-time Updates
+document.getElementById('gain-control').oninput = (e) => {
     if (gainNode) gainNode.gain.value = e.target.value;
-    document.getElementById('val-gain').textContent = Number(e.target.value).toFixed(2);
-});
+    document.getElementById('val-gain').textContent = parseFloat(e.target.value).toFixed(2);
+};
 
-document.getElementById('bass').addEventListener('input', e => {
+document.getElementById('bass-control').oninput = (e) => {
     if (bassNode) bassNode.gain.value = e.target.value;
-    document.getElementById('val-bass').textContent = e.target.value + ' dB';
-});
+    document.getElementById('val-bass').textContent = e.target.value + " dB";
+};
 
-document.getElementById('treble').addEventListener('input', e => {
+document.getElementById('treble-control').oninput = (e) => {
     if (trebleNode) trebleNode.gain.value = e.target.value;
-    document.getElementById('val-treble').textContent = e.target.value + ' dB';
-});
+    document.getElementById('val-treble').textContent = e.target.value + " dB";
+};
 
-document.getElementById('comp').addEventListener('input', e => {
+document.getElementById('comp-control').oninput = (e) => {
     if (compressor) compressor.threshold.value = e.target.value;
-    document.getElementById('val-comp').textContent = e.target.value + ' dB';
-});
+    document.getElementById('val-comp').textContent = e.target.value + " dB";
+};
 
-document.getElementById('exportBtn').addEventListener('click', () => {
-    const btn = document.getElementById('exportBtn');
+// ─── Real WAV Export ────────────────────────────────
+document.getElementById('export-btn').onclick = async () => {
+    const btn = document.getElementById('export-btn');
     btn.disabled = true;
-    btn.textContent = 'TRAITEMENT...';
+    btn.textContent = "PROCESSING MASTER...";
 
-    setTimeout(() => {
-        alert('Master exporté (simulation)');
+    try {
+        if (!player.src || !audioCtx) throw new Error("No audio loaded");
+
+        const originalBuffer = await fetch(player.src)
+            .then(r => r.arrayBuffer())
+            .then(ab => audioCtx.decodeAudioData(ab));
+
+        const offlineCtx = new OfflineAudioContext({
+            numberOfChannels: originalBuffer.numberOfChannels,
+            length: originalBuffer.length,
+            sampleRate: originalBuffer.sampleRate
+        });
+
+        const offlineSource = offlineCtx.createBufferSource();
+        offlineSource.buffer = originalBuffer;
+
+        const offlineGain = offlineCtx.createGain();
+        const offlineBass = offlineCtx.createBiquadFilter();
+        const offlineTreble = offlineCtx.createBiquadFilter();
+        const offlineComp = offlineCtx.createDynamicsCompressor();
+
+        offlineBass.type = "lowshelf";
+        offlineBass.frequency.value = 250;
+        offlineTreble.type = "highshelf";
+        offlineTreble.frequency.value = 3500;
+
+        offlineGain.gain.value = document.getElementById('gain-control').value;
+        offlineBass.gain.value = document.getElementById('bass-control').value;
+        offlineTreble.gain.value = document.getElementById('treble-control').value;
+        offlineComp.threshold.value = document.getElementById('comp-control').value;
+
+        offlineSource.connect(offlineBass);
+        offlineBass.connect(offlineTreble);
+        offlineTreble.connect(offlineComp);
+        offlineComp.connect(offlineGain);
+        offlineGain.connect(offlineCtx.destination);
+
+        offlineSource.start(0);
+
+        const renderedBuffer = await offlineCtx.startRendering();
+
+        const wavBlob = bufferToWave(renderedBuffer);
+
+        const url = URL.createObjectURL(wavBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'remastered_audio.wav';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        alert("Master exported successfully!");
+
+    } catch (err) {
+        console.error("Export error:", err);
+        alert("Export failed: " + err.message);
+    } finally {
         btn.disabled = false;
-        btn.textContent = 'Exporter le master (WAV)';
-    }, 2200);
-});
+        btn.textContent = "Export Master (.WAV)";
+    }
+};
+
+// Buffer to WAV function
+function bufferToWave(buffer) {
+    const numChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const length = buffer.length * numChannels * 2 + 44;
+    const arrayBuffer = new ArrayBuffer(length);
+    const view = new DataView(arrayBuffer);
+
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + buffer.length * numChannels * 2, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * numChannels * 2, true);
+    view.setUint16(32, numChannels * 2, true);
+    view.setUint16(34, 16, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, buffer.length * numChannels * 2, true);
+
+    let offset = 44;
+    for (let i = 0; i < buffer.length; i++) {
+        for (let channel = 0; channel < numChannels; channel++) {
+            const sample = Math.max(-1, Math.min(1, buffer.getChannelData(channel)[i]));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+        }
+    }
+
+    return new Blob([arrayBuffer], { type: 'audio/wav' });
+}
+
+function writeString(view, offset, string) {
+    for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+    }
+}
 </script>
 </body>
 </html>
