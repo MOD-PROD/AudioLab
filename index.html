@@ -6,16 +6,16 @@
     <title>ΔUDIO LΔB | MODPROD</title>
     <meta name="description" content="Outil gratuit en ligne pour remasteriser et améliorer vos pistes audio – EQ, compression, effets. Sans inscription.">
 
-    <!-- PWA et meta essentiels -->
+    <!-- PWA Meta -->
     <meta name="theme-color" content="#ff8c00">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="AudioLab Pro">
 
-    <!-- Manifest (fichier séparé) -->
+    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Favicons et icônes multi-tailles (comme dans ton message) -->
+    <!-- Favicons & Apple Touch Icons (tous ceux que tu as listés) -->
     <link rel="icon" type="image/png" sizes="16x16"   href="assets/icon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32"   href="assets/icon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48"   href="assets/icon-48x48.png">
@@ -23,8 +23,6 @@
     <link rel="icon" type="image/png" sizes="128x128" href="assets/icon-128x128.png">
     <link rel="icon" type="image/png" sizes="256x256" href="assets/icon-256x256.png">
     <link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512x512.png">
-
-    <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" sizes="128x128" href="assets/icon-128x128.png">
     <link rel="apple-touch-icon" sizes="256x256" href="assets/icon-256x256.png">
 
@@ -35,19 +33,19 @@
 
     <style>
         :root {
-            --copper:       #b87333;
+            --copper: #b87333;
             --copper-light: #d4944a;
             --copper-bright:#e8a84e;
-            --copper-glow:  #f0b860;
-            --orange:       #ff8c00;
-            --black:        #080808;
-            --surface-1:    #111111;
-            --surface-2:    #181818;
-            --surface-3:    #202020;
+            --copper-glow: #f0b860;
+            --orange: #ff8c00;
+            --black: #080808;
+            --surface-1: #111111;
+            --surface-2: #181818;
+            --surface-3: #202020;
             --border-copper:#3d2a10;
             --text-primary: #e8ddd0;
-            --text-muted:   #7a6a58;
-            --text-dim:     #4a3f34;
+            --text-muted: #7a6a58;
+            --text-dim: #4a3f34;
         }
 
         * { box-sizing: border-box; margin:0; padding:0; }
@@ -59,10 +57,7 @@
             padding: 1.5rem 1rem;
         }
 
-        header {
-            text-align: center;
-            margin: 1.5rem 0 3.5rem;
-        }
+        header { text-align: center; margin: 1.5rem 0 3.5rem; }
 
         .delta-title {
             font-family: 'JetBrains Mono', monospace;
@@ -71,7 +66,6 @@
             letter-spacing: 0.14em;
             background: linear-gradient(135deg, var(--copper), var(--copper-bright), var(--copper-glow));
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 20px rgba(184, 115, 51, 0.25);
             line-height: 1.05;
@@ -94,16 +88,6 @@
             margin-bottom: 2.2rem;
             border: 1px solid var(--border-copper);
             box-shadow: 0 8px 32px rgba(0,0,0,0.55);
-        }
-
-        .control-group h3 {
-            color: var(--copper-bright);
-            font-size: 1.15rem;
-            margin-bottom: 1.4rem;
-            border-bottom: 1px solid var(--border-copper);
-            padding-bottom: 0.7rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
         }
 
         .btn {
@@ -268,15 +252,14 @@
 </footer>
 
 <script>
-// Année dynamique
+// Année
 document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-// ─── PWA Install Prompt ────────────────────────────────
+// Prompt installation PWA
 let deferredPrompt;
 const installBtn = document.getElementById('install-btn');
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('Prompt d’installation disponible');
     e.preventDefault();
     deferredPrompt = e;
     installBtn.style.display = 'inline-block';
@@ -286,22 +269,22 @@ installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        console.log('Résultat installation :', outcome);
+        console.log('Install outcome:', outcome);
         deferredPrompt = null;
         installBtn.style.display = 'none';
     }
 });
 
-// ─── Service Worker ────────────────────────────────
+// Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker enregistré → scope:', reg.scope))
-            .catch(err => console.error('Échec SW:', err));
+            .then(reg => console.log('SW OK → scope:', reg.scope))
+            .catch(err => console.error('SW KO:', err));
     });
 }
 
-// ─── Logique audio complète ────────────────────────────────
+// Audio logic
 const audioFileInput = document.getElementById('audioFile');
 const fileNameDisplay = document.getElementById('fileName');
 const labSection = document.getElementById('lab-section');
@@ -336,7 +319,6 @@ function initAudioContext() {
     gainNode.connect(audioCtx.destination);
 }
 
-// Chargement fichier
 audioFileInput.addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -350,12 +332,11 @@ audioFileInput.addEventListener('change', e => {
     initAudioContext();
 });
 
-// Play / Pause
 playPauseBtn.addEventListener('click', () => {
     if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
 
     if (audioPlayer.paused) {
-        audioPlayer.play().catch(err => console.error('Erreur lecture:', err));
+        audioPlayer.play().catch(err => console.error('Play error:', err));
         playbackStatus.textContent = 'LECTURE';
         playPauseBtn.textContent = 'PAUSE';
     } else {
@@ -365,7 +346,6 @@ playPauseBtn.addEventListener('click', () => {
     }
 });
 
-// Sliders temps réel
 document.getElementById('gain').addEventListener('input', e => {
     if (gainNode) gainNode.gain.value = e.target.value;
     document.getElementById('val-gain').textContent = Number(e.target.value).toFixed(2);
@@ -386,325 +366,17 @@ document.getElementById('comp').addEventListener('input', e => {
     document.getElementById('val-comp').textContent = e.target.value + ' dB';
 });
 
-// Export simulé (placeholder)
 document.getElementById('exportBtn').addEventListener('click', () => {
     const btn = document.getElementById('exportBtn');
     btn.disabled = true;
-    btn.textContent = 'TRAITEMENT EN COURS...';
+    btn.textContent = 'TRAITEMENT...';
 
     setTimeout(() => {
-        alert('Master exporté ! (simulation – version complète → fichier WAV téléchargeable)');
+        alert('Master exporté (simulation)');
         btn.disabled = false;
         btn.textContent = 'Exporter le master (WAV)';
     }, 2200);
 });
 </script>
-</body>
-</html>
-<div class="app-container">
-
-  <!-- HEADER -->
-  <header class="text-center mb-8 select-none" style="text-align:center;margin-bottom:2rem;">
-    <div class="logo-wrap">
-      <div class="logo-line1">AUDI<span class="logo-dot">⊙</span>LAB</div>
-      <div class="logo-line2">PR<span class="logo-dot">⊙</span></div>
-    </div>
-    <p style="font-family:'JetBrains Mono';font-size:9px;text-transform:uppercase;letter-spacing:0.4em;color:#444;font-weight:700;margin-top:0.75rem;">Professional Mastering Suite</p>
-    <p style="font-family:'JetBrains Mono';font-size:7px;margin-top:0.25rem;opacity:0.4;color:var(--accent-dim);">BUILD_3.2.0_PROD</p>
-  </header>
-
-  <!-- 01. SIGNAL SOURCE -->
-  <div class="rack-panel">
-    <div class="label-header">
-      <span>Signal Source</span>
-      <div style="display:flex;gap:8px;">
-        <div class="led on" id="l-power"></div>
-        <div class="led" id="l-signal"></div>
-      </div>
-    </div>
-    <div onclick="document.getElementById('audioInput').click()" class="file-display" style="cursor:pointer;">
-      <span id="fileName" class="file-name-text">Load a file</span>
-      <div style="font-family:'JetBrains Mono';font-size:8px;color:#333;margin-top:4px;">MP3 · WAV · FLAC · OGG · MP4 · M4A</div>
-      <input type="file" id="audioInput" accept="audio/*,.mp3,.wav,.flac,.ogg,.aac,.m4a,.mp4,.mov,.m4v"
-             style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;" />
-    </div>
-    <div style="margin-top:1rem;">
-      <div class="tech-row"><span>Format</span><span class="tech-value" id="t-format">---</span></div>
-      <div class="tech-row"><span>Sample Rate</span><span class="tech-value" id="t-rate">-- kHz</span></div>
-      <div class="tech-row"><span>Channels</span><span class="tech-value" id="t-channels">---</span></div>
-      <div class="tech-row"><span>Duration</span><span class="tech-value" id="t-duration">--:--</span></div>
-    </div>
-  </div>
-
-  <!-- 02. TRANSPORT -->
-  <div class="rack-panel">
-    <div class="label-header"><span>Transport</span></div>
-    <div class="progress-wrap">
-      <span class="progress-time" id="t-current">0:00</span>
-      <div class="progress-track" id="progressBar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <span class="progress-time" id="t-total">0:00</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
-      <button id="playBtn" disabled class="btn-main" style="grid-column:span 2;color:var(--accent);">Play</button>
-      <button id="abBtn" class="btn-main ab-btn" style="background:rgba(255,255,255,0.08);">A / B</button>
-    </div>
-    <button id="stopBtn" disabled class="btn-main" style="margin-top:0.75rem;color:#ff5555;">Stop</button>
-  </div>
-
-  <!-- 03. FFT + METERS -->
-  <div class="rack-panel">
-    <div class="label-header"><span>FFT Spectrum</span></div>
-    <canvas id="specCanvas"  style="height:90px;margin-bottom:1rem;"></canvas>
-    <div class="label-header" style="margin-top:0.5rem;"><span>Vector Scope</span></div>
-    <canvas id="scopeCanvas" style="height:90px;margin-bottom:1rem;"></canvas>
-    <div class="meter-container">
-      <div class="meter-label"><span>Peak</span><span id="v-peak">-∞ dB</span></div>
-      <div class="meter-bar-bg"><div id="m-peak" class="meter-fill" style="width:0%"></div></div>
-    </div>
-    <div class="meter-container">
-      <div class="meter-label"><span>RMS</span><span id="v-rms">-∞ dB</span></div>
-      <div class="meter-bar-bg"><div id="m-rms" class="meter-fill" style="background:var(--accent-dim);width:0%"></div></div>
-    </div>
-    <div class="meter-container">
-      <div class="meter-label"><span>Comp GR</span><span id="v-gr">0.0 dB</span></div>
-      <div class="meter-bar-bg"><div id="m-gr" class="meter-fill" style="background:#ff4444;width:0%"></div></div>
-    </div>
-    <div class="meter-container">
-      <div class="meter-label"><span>Momentary LUFS</span><span id="v-lufs">-∞ LUFS</span></div>
-      <div class="meter-bar-bg"><div id="m-lufs" class="meter-fill" style="background:#00ffcc;width:0%"></div></div>
-    </div>
-  </div>
-
-  <!-- 04. PRO ANALYSIS + PRESETS -->
-  <div class="rack-panel" id="proAnalysisPanel">
-    <div class="label-header" style="margin-bottom:0.75rem;">
-      <span>Pro Analysis</span>
-      <div class="led" id="analysis-led"></div>
-    </div>
-    <div id="analysisPlaceholder" style="font-family:'JetBrains Mono';font-size:9px;color:#333;text-align:center;padding:0.5rem 0;">Charge un fichier pour analyser</div>
-    <div id="analyzingMsg" style="display:none;font-family:'JetBrains Mono';font-size:9px;color:#555;text-align:center;padding:0.5rem 0;">⚙ Analyse en cours…</div>
-    <div id="analysisResults" style="display:none;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-family:'JetBrains Mono';font-size:9px;margin-bottom:12px;">
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">Int. LUFS</div><div id="int-lufs" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">True Peak</div><div id="int-tp" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">LRA</div><div id="int-lra" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">Crest Factor</div><div id="int-crest" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">Stereo Corr.</div><div id="int-corr" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-        <div><div style="color:#555;font-size:8px;text-transform:uppercase;letter-spacing:0.1em;">Spectral Bal.</div><div id="int-spec" style="color:var(--accent);font-weight:700;font-size:11px;">---</div></div>
-      </div>
-      <div>
-        <div style="font-family:'JetBrains Mono';font-size:8px;color:#555;text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:5px;">
-          <span>Quality</span><span id="quality-score-txt">--</span>
-        </div>
-        <div style="height:7px;background:#111;border-radius:4px;overflow:hidden;">
-          <div id="qualityFill" style="height:100%;width:0%;transition:width 0.6s,background 0.4s;border-radius:4px;"></div>
-        </div>
-      </div>
-    </div>
-    <!-- Presets -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:14px;">
-      <button class="preset-btn" onclick="applyPreset('streaming')" id="pr-streaming" disabled>Streaming<span class="preset-sublabel">-14 LUFS</span></button>
-      <button class="preset-btn" onclick="applyPreset('apple')"     id="pr-apple"     disabled>Apple<span class="preset-sublabel">-16 LUFS</span></button>
-      <button class="preset-btn" onclick="applyPreset('loud')"      id="pr-loud"      disabled>Loud<span class="preset-sublabel">-9 LUFS</span></button>
-      <button class="preset-btn" onclick="applyPreset('vinyl')"     id="pr-vinyl"     disabled>Vinyl<span class="preset-sublabel">-12 LUFS</span></button>
-      <button class="preset-btn" onclick="applyPreset('edm')"       id="pr-edm"       disabled>EDM<span class="preset-sublabel">-7 LUFS</span></button>
-      <button class="preset-btn" onclick="applyPreset('chill')"     id="pr-chill"     disabled>Chill<span class="preset-sublabel">-16 LUFS</span></button>
-    </div>
-    <button id="smartMasterBtn" class="smart-btn" disabled>⚡ Smart Master</button>
-  </div>
-
-  <!-- 05. TONALITY -->
-  <div class="rack-panel">
-    <div class="module-header" onclick="toggleModule(this)">
-      <span class="module-title">Tonality</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="module-content">
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Low</span>
-            <div class="tip">i<div class="tip-box">Low shelf filter (250 Hz). Boosts or cuts bass frequencies: kick, bass, sub-bass.</div></div>
-          </div>
-          <span class="control-value" id="v-low">0.0 dB</span>
-        </div>
-        <input type="range" id="p-low" min="-12" max="12" value="0" step="0.1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Mid Freq</span>
-            <div class="tip">i<div class="tip-box">Center frequency of the peaking filter (200 Hz–8 kHz). Sets the midrange zone to be processed.</div></div>
-          </div>
-          <span class="control-value" id="v-midfreq">1.2 kHz</span>
-        </div>
-        <input type="range" id="p-midfreq" min="200" max="8000" value="1200" step="50">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Mid Gain</span>
-            <div class="tip">i<div class="tip-box">Gain of the peaking filter at Mid Freq. Boost presence or cut unwanted resonances.</div></div>
-          </div>
-          <span class="control-value" id="v-mid">0.0 dB</span>
-        </div>
-        <input type="range" id="p-mid" min="-12" max="12" value="0" step="0.1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Mid Q</span>
-            <div class="tip">i<div class="tip-box">Bandwidth of the peaking filter. Low = wide and smooth. High = narrow and surgical.</div></div>
-          </div>
-          <span class="control-value" id="v-midq">0.7</span>
-        </div>
-        <input type="range" id="p-midq" min="0.1" max="4" value="0.7" step="0.1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">High</span>
-            <div class="tip">i<div class="tip-box">High shelf filter (6.5 kHz). Controls air, cymbals, and brightness.</div></div>
-          </div>
-          <span class="control-value" id="v-high">0.0 dB</span>
-        </div>
-        <input type="range" id="p-high" min="-12" max="12" value="0" step="0.1">
-      </div>
-    </div>
-  </div>
-
-  <!-- 06. DYNAMICS -->
-  <div class="rack-panel">
-    <div class="module-header" onclick="toggleModule(this)">
-      <span class="module-title">Dynamics</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="module-content">
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Warmth</span>
-            <div class="tip">i<div class="tip-box">Soft harmonic saturation (tanh). Simulates analog transformer warmth. 0 = clean, 80 = warm and saturated.</div></div>
-          </div>
-          <span class="control-value" id="v-warmth">0%</span>
-        </div>
-        <input type="range" id="p-warmth" min="0" max="80" value="0">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Comp Threshold</span>
-            <div class="tip">i<div class="tip-box">Level at which the compressor activates. Signals above this are attenuated by the defined ratio.</div></div>
-          </div>
-          <span class="control-value" id="v-thresh">-24 dB</span>
-        </div>
-        <input type="range" id="p-thresh" min="-60" max="0" value="-24" step="1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Comp Ratio</span>
-            <div class="tip">i<div class="tip-box">Compression ratio. 4:1 = 4 dB above threshold → 1 dB output. Higher = more aggressive.</div></div>
-          </div>
-          <span class="control-value" id="v-ratio">4.0:1</span>
-        </div>
-        <input type="range" id="p-ratio" min="1" max="20" value="4" step="0.1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Limiter</span>
-            <div class="tip">i<div class="tip-box">Absolute brickwall ceiling (ratio 20:1). Prevents any clipping. Recommended: -1 dBFS for streaming.</div></div>
-          </div>
-          <span class="control-value" id="v-limit">-6 dB</span>
-        </div>
-        <input type="range" id="p-limit" min="-12" max="0" value="-6" step="0.1">
-      </div>
-    </div>
-  </div>
-
-  <!-- 07. SPACE -->
-  <div class="rack-panel">
-    <div class="module-header" onclick="toggleModule(this)">
-      <span class="module-title">Space</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="module-content">
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Width (Mid/Side)</span>
-            <div class="tip">i<div class="tip-box">Mid/Side matrix. 100% = neutral. Above → widens stereo field. Below → narrows toward mono.</div></div>
-          </div>
-          <span class="control-value" id="v-width">100%</span>
-        </div>
-        <input type="range" id="p-width" min="50" max="200" value="100" step="1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Reverb Mix</span>
-            <div class="tip">i<div class="tip-box">Amount of reverb added. 0% = none. Adds space and acoustic depth to the mix.</div></div>
-          </div>
-          <span class="control-value" id="v-reverb">15%</span>
-        </div>
-        <input type="range" id="p-reverb" min="0" max="50" value="15" step="1">
-      </div>
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Reverb Decay</span>
-            <div class="tip">i<div class="tip-box">Length of the reverb tail. Short = small room. Long = large hall or cathedral.</div></div>
-          </div>
-          <span class="control-value" id="v-decay">1.8s</span>
-        </div>
-        <input type="range" id="p-decay" min="0.5" max="4" value="1.8" step="0.1">
-      </div>
-    </div>
-  </div>
-
-  <!-- 08. FINAL -->
-  <div class="rack-panel">
-    <div class="module-header" onclick="toggleModule(this)">
-      <span class="module-title">Final</span>
-      <span class="chevron">▼</span>
-    </div>
-    <div class="module-content">
-      <div class="control-group">
-        <div class="control-header">
-          <div class="control-left">
-            <span class="control-title">Master Gain</span>
-            <div class="tip">i<div class="tip-box">Final output volume. Used to reach the target loudness. e.g. -14 LUFS for Spotify, -16 for Apple Music.</div></div>
-          </div>
-          <span class="control-value" id="v-gain">0.0 dB</span>
-        </div>
-        <input type="range" id="p-gain" min="-30" max="6" value="0" step="0.1">
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:1rem;margin-bottom:0.5rem;">
-        <label style="font-family:'JetBrains Mono';font-size:8px;color:#666;text-transform:uppercase;letter-spacing:0.1em;flex:1;">Bit Depth</label>
-        <select id="bitDepthSelect" style="background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:#e0e0e0;font-family:'JetBrains Mono';font-size:9px;padding:4px 8px;cursor:pointer;">
-          <option value="16" selected>16-bit (CD)</option>
-          <option value="24">24-bit (Studio)</option>
-          <option value="32">32-bit float</option>
-        </select>
-        <label style="display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono';font-size:8px;color:#666;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;">
-          <input type="checkbox" id="ditherCheck" checked style="accent-color:var(--accent);width:12px;height:12px;">Dither
-        </label>
-      </div>
-      <button id="exportBtn" disabled class="btn-main" style="background:var(--accent);color:#000;border-color:var(--accent);">
-        Export Remaster (.WAV)
-      </button>
-    </div>
-  </div>
-
-  <footer style="text-align:center;margin-top:1rem;margin-bottom:0.5rem;">
-    <p style="font-family:'JetBrains Mono';font-size:7px;letter-spacing:0.35em;text-transform:uppercase;opacity:0.2;color:#888;">Neural Mastering Processor V3.2.0</p>
-  </footer>
-
-</div><!-- /app-container -->
-
-<script src="app.js"></script>
 </body>
 </html>
